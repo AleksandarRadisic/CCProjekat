@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CityLibrary.Domain.Model;
+﻿using CityLibrary.Domain.Model;
 using CityLibrary.Domain.PersistenceInterfaces;
 using CityLibrary.Persistence.EfStructures;
 using CityLibrary.Persistence.Repositories.Base.Implementation;

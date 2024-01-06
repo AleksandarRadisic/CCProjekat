@@ -3,7 +3,6 @@ using CentralLibrary.API.Dto;
 using CentralLibrary.Domain.Exceptions;
 using CentralLibrary.Domain.Model;
 using CentralLibrary.Domain.Services.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityLibrary.API.Controllers

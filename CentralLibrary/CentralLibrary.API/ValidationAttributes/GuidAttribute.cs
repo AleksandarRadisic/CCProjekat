@@ -1,8 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Globalization;
 
-namespace CityLibrary.API.ValidationAttributes
+namespace CentralLibrary.API.ValidationAttributes
 {
     public class GuidAttribute : ValidationAttribute
     {

@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CityLibrary.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240105181131_BookRentalReturnDateAdded")]
-    partial class BookRentalReturnDateAdded
+    [Migration("20240106204706_BookSeed")]
+    partial class BookSeed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

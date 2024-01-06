@@ -3,7 +3,6 @@ using CityLibrary.API.Dto;
 using CityLibrary.Domain.Exceptions;
 using CityLibrary.Domain.Model;
 using CityLibrary.Domain.Services.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CityLibrary.API.Controllers

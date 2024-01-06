@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CentralLibrary.Domain.Model;
 using CentralLibrary.Domain.PersistenceInterfaces;
 using CentralLibrary.Persistence.EfStructures;

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using CityLibrary.Domain.Model;
+﻿using CityLibrary.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace CityLibrary.Persistence.EfStructures

@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using CentralLibrary.Domain.Model;
+﻿using CentralLibrary.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 
 namespace CentralLibrary.Persistence.EfStructures

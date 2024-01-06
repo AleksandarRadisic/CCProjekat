@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CityLibrary.Domain.Model;
 using CityLibrary.Domain.PersistenceInterfaces;
 using CityLibrary.Persistence.EfStructures;
@@ -20,6 +18,11 @@ namespace JobCandidates.Persistence.Repositories.Implementation
         public Book GetByIsbn(string isbn)
         {
             return GetSet().FirstOrDefault(b => b.ISBN == isbn);
+        }
+
+        public IEnumerable<Book> GetAll()
+        {
+            return GetSet().ToList();
         }
     }
 }

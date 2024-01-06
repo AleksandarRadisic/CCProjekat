@@ -33,6 +33,111 @@ services:
         POSTGRES_DB: "CentralLibrary"
     networks:
       - library_network
+  
+  novi_sad_library:
+    image: city_library
+    container_name: novi_sad_library
+    build: ./CityLibrary
+    restart: on-failure
+    ports:
+      - 8001:80
+    environment:
+      CITY_LIBRARY_DB_CONNECTION_STRING: ${ENV_NOVI_SAD_CITY_LIBRARY_DB_CONNECTION_STRING}
+      CITY_NAME: ${ENV_NOVI_SAD_CITY}
+      CENTRAL_LIBRARY_URL: ${ENV_CENTRAL_LIBRARY_URL}
+    depends_on:
+        novi_sad_library_db:
+            condition: service_healthy
+    networks:
+      - library_network
+      
+  novi_sad_library_db:
+    image: postgres
+    container_name: novi_sad_library_db
+    restart: on-failure
+    volumes:
+      - ns_lib:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "CityLibrary"
+    networks:
+      - library_network
+      
+  belgrade_library:
+    image: city_library
+    container_name: belgrade_library
+    build: ./CityLibrary
+    restart: on-failure
+    ports:
+      - 8002:80
+    environment:
+      CITY_LIBRARY_DB_CONNECTION_STRING: ${ENV_BELGRADE_CITY_LIBRARY_DB_CONNECTION_STRING}
+      CITY_NAME: ${ENV_BELGRADE_CITY}
+      CENTRAL_LIBRARY_URL: ${ENV_CENTRAL_LIBRARY_URL}
+    depends_on:
+        belgrade_library_db:
+            condition: service_healthy
+    networks:
+      - library_network
+      
+  belgrade_library_db:
+    image: postgres
+    container_name: belgrade_library_db
+    restart: on-failure
+    volumes:
+      - bg_lib:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "CityLibrary"
+    networks:
+      - library_network
+      
+  nis_library:
+    image: city_library
+    container_name: nis_library
+    build: ./CityLibrary
+    restart: on-failure
+    ports:
+      - 8003:80
+    environment:
+      CITY_LIBRARY_DB_CONNECTION_STRING: ${ENV_NIS_CITY_LIBRARY_DB_CONNECTION_STRING}
+      CITY_NAME: ${ENV_NIS_CITY}
+      CENTRAL_LIBRARY_URL: ${ENV_CENTRAL_LIBRARY_URL}
+    depends_on:
+        nis_library_db:
+            condition: service_healthy
+    networks:
+      - library_network
+      
+  nis_library_db:
+    image: postgres
+    container_name: nis_library_db
+    restart: on-failure
+    volumes:
+      - ns_lib:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "CityLibrary"
+    networks:
+      - library_network
 
   
 networks:
@@ -43,3 +148,6 @@ volumes:
   ns_lib:
   bg_lib:
   nis_lib:
+  
+  
+  

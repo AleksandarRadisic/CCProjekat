@@ -10,8 +10,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CityLibrary.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240104204843_BookSeed")]
-    partial class BookSeed
+    [Migration("20240106204654_BookAndBookRentals")]
+    partial class BookAndBookRentals
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,6 +57,9 @@ namespace CityLibrary.Persistence.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("RentalDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("ReturnDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.HasKey("Id");

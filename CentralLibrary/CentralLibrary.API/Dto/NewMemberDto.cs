@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CentralLibrary.API.Dto
+﻿namespace CentralLibrary.API.Dto
 {
     public class NewMemberDto
     {

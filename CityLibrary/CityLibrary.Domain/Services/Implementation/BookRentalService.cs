@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using CityLibrary.Domain.EnvironmentConfig;
 using CityLibrary.Domain.Exceptions;
 using CityLibrary.Domain.Model;
 using CityLibrary.Domain.PersistenceInterfaces;
 using CityLibrary.Domain.Services.Interface;
+using CityLibrary.Domain.Utility;
 
 namespace CityLibrary.Domain.Services.Implementation
 {
@@ -16,22 +19,39 @@ namespace CityLibrary.Domain.Services.Implementation
         private readonly IBookWriteRepository _bookWriteRepository;
         private readonly IBookRentalReadRepository _bookRentalReadRepository;
         private readonly IBookRentalWriteRepository _bookRentalWriteRepository;
+        private readonly IEnvironmentConfig _environmentConfig;
+        private readonly IHttpSender _httpSender;
 
-        public BookRentalService(IBookReadRepository bookReadRepository, IBookWriteRepository bookWriteRepository, IBookRentalReadRepository bookRentalReadRepository, IBookRentalWriteRepository bookRentalWriteRepository)
+        public BookRentalService(IBookReadRepository bookReadRepository, IBookWriteRepository bookWriteRepository, IBookRentalReadRepository bookRentalReadRepository, IBookRentalWriteRepository bookRentalWriteRepository, IHttpSender httpSender, IEnvironmentConfig environmentConfig)
         {
             _bookReadRepository = bookReadRepository;
             _bookWriteRepository = bookWriteRepository;
             _bookRentalReadRepository = bookRentalReadRepository;
             _bookRentalWriteRepository = bookRentalWriteRepository;
+            _httpSender = httpSender;
+            _environmentConfig = environmentConfig;
         }
 
         public void RentBook(Book book, int memberNumber)
         {
-            //pozvati centralnu u vezi membera
+            var bookRentalFromRepo = _bookRentalReadRepository.GetActiveByIsbnAndMemberNumber(book.ISBN, memberNumber);
+            if (bookRentalFromRepo != null) throw new ConflictException("Book already rented by that member"); 
+            var response = _httpSender.Put("http://" + _environmentConfig.CentralLibraryUrl + "/api/Member/Rent",
+                new CentralLibraryRentalData { MemberNumber = memberNumber }).Result;
+
+            if (!response.IsSuccessStatusCode)
+            {
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.Conflict: throw new ConflictException(response.Content.ReadAsStringAsync().Result);
+                    case HttpStatusCode.NotFound: throw new NotFoundException(response.Content.ReadAsStringAsync().Result);
+                    default: throw new Exception(response.Content.ReadAsStringAsync().Result);
+                }
+            }
 
             Book fromRepo = _bookReadRepository.GetByIsbn(book.ISBN);
             if (fromRepo == null) throw new NotFoundException("Book not found");
-            if (fromRepo.AmountAvailable == 0) throw new BookNotAvailableException();
+            if (fromRepo.AmountAvailable == 0) throw new ConflictException("Book is not available at the current time");
             fromRepo.AmountAvailable -= 1;
             BookRental newRent = new BookRental
             {
@@ -46,10 +66,19 @@ namespace CityLibrary.Domain.Services.Implementation
 
         public void ReturnBook(string isbn, int memberNumber)
         {
-            //pozvati centralnu u vezi membera
-
-            BookRental rental = _bookRentalReadRepository.GetByIsbnAndMemberNumber(isbn, memberNumber);
+            BookRental rental = _bookRentalReadRepository.GetActiveByIsbnAndMemberNumber(isbn, memberNumber);
             if (rental == null) throw new NotFoundException("Book Rental not found");
+            var response = _httpSender.Put("http://" + _environmentConfig.CentralLibraryUrl + "/api/Member/Return",
+                new CentralLibraryRentalData { MemberNumber = memberNumber }).Result;
+            if (!response.IsSuccessStatusCode)
+            {
+                switch (response.StatusCode)
+                {
+                    case HttpStatusCode.NotFound: throw new NotFoundException(response.Content.ReadAsStringAsync().Result);
+                    case HttpStatusCode.Conflict: throw new ConflictException(response.Content.ReadAsStringAsync().Result);
+                    default: throw new Exception(response.Content.ReadAsStringAsync().Result);
+                }
+            }
             rental.Book.AmountAvailable += 1;
             rental.ReturnDate = DateTime.Now;
             _bookRentalWriteRepository.Update(rental);

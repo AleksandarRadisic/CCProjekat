@@ -15,6 +15,7 @@ using CityLibrary.Domain.EnvironmentConfig;
 using CityLibrary.Domain.PersistenceInterfaces;
 using CityLibrary.Domain.Services.Implementation;
 using CityLibrary.Domain.Services.Interface;
+using CityLibrary.Domain.Utility;
 using CityLibrary.Persistence.EfStructures;
 using CityLibrary.Persistence.Repositories.Implementation;
 using JobCandidates.Persistence.Repositories.Implementation;
@@ -63,6 +64,8 @@ namespace CityLibrary.API
 
             services.AddScoped<IBookRentalService, BookRentalService>();
             services.AddScoped<IRegistrationService, RegistrationService>();
+
+            services.AddScoped<IHttpSender, HttpSender>();
 
             using (var context = new AppDbContextFactory().CreateDbContext(
                        new[] { config.DatabaseConnectionString }))

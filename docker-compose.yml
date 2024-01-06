@@ -1,0 +1,45 @@
+version: "3.8"
+
+services:
+  central_library:
+    image: central_library
+    container_name: central_library
+    build: ./CentralLibrary
+    restart: on-failure
+    ports:
+      - 8000:80
+    environment:
+      CENTRAL_LIBRARY_DB_CONNECTION_STRING: ${ENV_CENTRAL_LIBRARY_DB_CONNECTION_STRING}
+    depends_on:
+        central_library_db:
+            condition: service_healthy
+    networks:
+      - library_network
+        
+  central_library_db:
+    image: postgres
+    container_name: central_library_db
+    restart: on-failure
+    volumes:
+      - central_lib:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    environment:
+        POSTGRES_PASSWORD: "root"
+        POSTGRES_USER: "postgres"
+        POSTGRES_DB: "CentralLibrary"
+    networks:
+      - library_network
+
+  
+networks:
+  library_network:
+
+volumes:
+  central_lib:
+  ns_lib:
+  bg_lib:
+  nis_lib:

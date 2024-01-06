@@ -10,7 +10,7 @@ namespace CityLibrary.Domain.PersistenceInterfaces
 {
     public interface IBookRentalReadRepository : IBaseReadRepository<Guid, BookRental>
     {
-        public BookRental GetByIsbnAndMemberNumber(string isbn, int memberNumber);
+        public BookRental GetActiveByIsbnAndMemberNumber(string isbn, int memberNumber);
         public IEnumerable<BookRental> GetAll();
     }
 }

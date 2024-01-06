@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CityLibrary.Domain.Exceptions
 {
-    public class BookNotAvailableException : Exception
+    public class ConflictException : Exception
     {
-        public BookNotAvailableException() : base("Book is not available at the current time") { }
+        public ConflictException(string message) : base(message) { }
     }
 }

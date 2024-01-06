@@ -9,6 +9,6 @@ namespace CityLibrary.Domain.Services.Interface
 {
     public interface IRegistrationService
     {
-        public void RegisterMember(Member newMember);
+        public string RegisterMember(Member newMember);
     }
 }

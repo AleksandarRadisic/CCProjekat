@@ -18,10 +18,10 @@ namespace CityLibrary.Persistence.Repositories.Implementation
         {
         }
 
-        public BookRental GetByIsbnAndMemberNumber(string isbn, int memberNumber)
+        public BookRental GetActiveByIsbnAndMemberNumber(string isbn, int memberNumber)
         {
             return GetSet().Include(br => br.Book)
-                .FirstOrDefault(br => br.Book.ISBN == isbn && br.MemberNumber == memberNumber);
+                .FirstOrDefault(br => br.Book.ISBN == isbn && br.MemberNumber == memberNumber && br.ReturnDate == DateTime.MinValue);
         }
 
         public IEnumerable<BookRental> GetAll()

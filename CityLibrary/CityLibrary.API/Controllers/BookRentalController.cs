@@ -38,10 +38,11 @@ namespace CityLibrary.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.GetType() == typeof(AggregateException)) ex = ex.InnerException;
                 switch (ex)
                 {
                     case NotFoundException: return NotFound(ex.Message);
-                    case BookNotAvailableException: return Conflict(ex.Message);
+                    case ConflictException: return Conflict(ex.Message);
                     default: return Problem("Oops, something went wrong, try again!");
                 }
             }
@@ -58,9 +59,11 @@ namespace CityLibrary.API.Controllers
             }
             catch (Exception ex)
             {
+                if (ex.GetType() == typeof(AggregateException)) ex = ex.InnerException;
                 switch (ex)
                 {
                     case NotFoundException: return NotFound(ex.Message);
+                    case ConflictException: return Conflict(ex.Message);
                     default: return Problem("Oops, something went wrong, try again!");
                 }
             }

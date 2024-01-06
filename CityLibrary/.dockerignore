@@ -1,0 +1,10 @@
+bin\
+obj\
+.vs/
+/bin/
+/obj/
+*.suo
+*.user
+*.sln.docstates
+*.dll
+*.exe

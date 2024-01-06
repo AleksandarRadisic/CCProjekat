@@ -1,0 +1,17 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CentralLibrary.Domain.Model;
+
+namespace CentralLibrary.Domain.Services.Interface
+{
+    public interface IMemberService
+    {
+        public int RegisterMember(Member newMember);
+        public IEnumerable<Member> GetAll();
+        void AddRent(int memberNUmber);
+        void ReturnRented(int memberNumber);
+    }
+}

@@ -14,21 +14,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Set Version
-        id: set_version
-        run: |
-          version=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
-          echo "Latest tag: $version"
-          
-          if [ -z "$version" ]; then
-            version="v1"
-          else
-            version=$(echo $version | cut -c 2- | awk -F '.' '{print "v" $1+1}')
-          fi
-          echo "VERSION=$version" >> $GITHUB_ENV
-          echo "Calculated version: $version"
-          echo "VERSION=$version"
-
       - name: Docker Login
         env:
           DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
@@ -39,14 +24,12 @@ jobs:
       - name: Build and Push image
         run: |
           cd CentralLibrary
-          docker build -t aleksandarradisic/central-library:$VERSION -t aleksandarradisic/central-library:latest .
-          docker push aleksandarradisic/central-library:$VERSION
+          docker build -t aleksandarradisic/central-library:latest .
           docker push aleksandarradisic/central-library:latest
-          cd ..
 
+          cd ..
           cd CityLibrary
-          docker build -t aleksandarradisic/city-library:$VERSION -t aleksandarradisic/city-library:latest .
-          docker push aleksandarradisic/city-library:$VERSION
+          docker build -t aleksandarradisic/city-library:latest .
           docker push aleksandarradisic/city-library:latest
         
 

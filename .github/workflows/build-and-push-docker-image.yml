@@ -1,0 +1,50 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout
+    - uses: actions/checkout@v3
+
+    - name: Set Version
+      id: set_version
+      run: |
+        version=$(git tag -l 'v*' --sort=-version:refname | head -n 1)
+        if [ -z "$version" ]; then
+          version="v1"
+        else
+          version=$(echo $version | cut -c 2- | awk -F '.' '{print "v" $1+1}')
+        fi
+        echo "VERSION=$version" >> $GITHUB_ENV
+
+    - name: Docker Login
+      env:
+        DOCKER_USER: ${{secrets.DOCKER_USERNAME}}
+        DOCKER_PASSWORD: ${{secrets.DOCKER_PASSWORD}}
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+
+    - name: Build and Push image
+      run: |
+        cd CentralLibrary
+        docker build -t $DOCKER_USER/CentralLibrary:$VERSION -t $DOCKER_USER/CentralLibrary:latest .
+        docker push $DOCKER_USER/CentralLibrary:$VERSION
+        docker push $DOCKER_USER/CentralLibrary:latest
+        cd ..
+        cd CityLibrary
+        docker build -t $DOCKER_USER/CityLibrary:$VERSION -t $DOCKER_USER/CityLibrary:latest .
+        docker push $DOCKER_USER/CityLibrary:$VERSION
+        docker push $DOCKER_USER/CityLibrary:latest
+        
+
+      

@@ -36,14 +36,14 @@ jobs:
         run: |
           cd CentralLibrary
           docker build -t $DOCKER_USER/CentralLibrary:$VERSION -t $DOCKER_USER/CentralLibrary:latest .
-          docker push $DOCKER_USER/CentralLibrary:$VERSION
-          docker push $DOCKER_USER/CentralLibrary:latest
+          docker push aleksandarradisic/CentralLibrary:$VERSION
+          docker push aleksandarradisic/CentralLibrary:latest
           cd ..
 
           cd CityLibrary
-          docker build -t $DOCKER_USER/CityLibrary:$VERSION -t $DOCKER_USER/CityLibrary:latest .
-          docker push $DOCKER_USER/CityLibrary:$VERSION
-          docker push $DOCKER_USER/CityLibrary:latest
+          docker build -t aleksandarradisic/CityLibrary:$VERSION -t aleksandarradisic/CityLibrary:latest .
+          docker push aleksandarradisic/CityLibrary:$VERSION
+          docker push aleksandarradisic/CityLibrary:latest
         
 
       

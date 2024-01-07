@@ -35,15 +35,15 @@ jobs:
       - name: Build and Push image
         run: |
           cd CentralLibrary
-          docker build -t $DOCKER_USER/central-library:$VERSION -t $DOCKER_USER/central-library:latest .
-          docker push $DOCKER_USER/central-library:$VERSION
-          docker push $DOCKER_USER/central-library:latest
+          docker build -t aleksandarradisic/central-library:$VERSION -t aleksandarradisic/central-library:latest .
+          docker push aleksandarradisic/central-library:$VERSION
+          docker push aleksandarradisic/central-library:latest
           cd ..
 
           cd CityLibrary
-          docker build -t $DOCKER_USER/city-library:$VERSION -t $DOCKER_USER/city-library:latest .
-          docker push $DOCKER_USER/city-library:$VERSION
-          docker push $DOCKER_USER/city-library:latest
+          docker build -t aleksandarradisic/city-library:$VERSION -t aleksandarradisic/city-library:latest .
+          docker push aleksandarradisic/city-library:$VERSION
+          docker push aleksandarradisic/city-library:latest
         
 
       

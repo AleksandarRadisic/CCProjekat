@@ -23,6 +23,12 @@ namespace CentralLibrary.API.Controllers
             return Ok(_memberService.GetAll());
         }
 
+        [HttpGet("test")]
+        public IActionResult GetTest()
+        {
+            return Ok("Ok");
+        }
+
         [HttpPut("Rent")]
         public IActionResult CheckAndAddRent(RentDto dto)
         {

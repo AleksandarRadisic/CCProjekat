@@ -2,9 +2,9 @@ version: "3.8"
 
 services:
   central_library:
-    image: central_library
+    image: aleksandarradisic/central-library:latest
     container_name: central_library
-    build: ./CentralLibrary
+    #build: ./CentralLibrary
     restart: on-failure
     ports:
       - 8000:80
@@ -35,9 +35,9 @@ services:
       - library_network
   
   novi_sad_library:
-    image: city_library
+    image: aleksandarradisic/city-library:latest
     container_name: novi_sad_library
-    build: ./CityLibrary
+    #build: ./CityLibrary
     restart: on-failure
     ports:
       - 8001:80
@@ -70,9 +70,9 @@ services:
       - library_network
       
   belgrade_library:
-    image: city_library
+    image: aleksandarradisic/city-library:latest
     container_name: belgrade_library
-    build: ./CityLibrary
+    #build: ./CityLibrary
     restart: on-failure
     ports:
       - 8002:80
@@ -105,9 +105,9 @@ services:
       - library_network
       
   nis_library:
-    image: city_library
+    image: aleksandarradisic/city-library:latest
     container_name: nis_library
-    build: ./CityLibrary
+    #build: ./CityLibrary
     restart: on-failure
     ports:
       - 8003:80

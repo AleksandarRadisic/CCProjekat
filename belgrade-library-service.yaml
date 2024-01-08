@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: belgrade-library-service
+spec:
+  selector:
+    app: belgrade-library-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: belgrade-library-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: belgrade-library-ingress.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: belgrade-library-service
+                port:
+                  number: 80

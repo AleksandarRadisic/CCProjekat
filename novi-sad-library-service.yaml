@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: novi-sad-library-service
+spec:
+  selector:
+    app: novi-sad-library-pod
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+  type: ClusterIP
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: novi-sad-library-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  rules:
+    - host: novi-sad-library-ingress.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: novi-sad-library-service
+                port:
+                  number: 80

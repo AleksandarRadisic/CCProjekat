@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: novi-sad-library-pod
+  labels:
+    app: novi-sad-library-pod
+spec:
+  containers:
+  - name: city-library
+    image: aleksandarradisic/city-library:latest
+    ports:
+    - containerPort: 80
+    env:
+      - name: CITY_LIBRARY_DB_CONNECTION_STRING
+        value: "Host=localhost;Database=CityLibrary;Username=postgres;Password=root"
+      - name: CENTRAL_LIBRARY_URL
+        value: "$(CENTRAL_LIBRARY_SERVICE_SERVICE_HOST):$(CENTRAL_LIBRARY_SERVICE_SERVICE_PORT)"
+      - name: CITY_NAME
+        value: Novi Sad
+
+  - name: city-library-db
+    image: postgres
+    env:
+      - name: POSTGRES_PASSWORD
+        value: "root"
+      - name: POSTGRES_USER
+        value: "postgres"
+      - name: POSTGRES_DB
+        value: "CityLibrary"
+    ports:
+    - containerPort: 5432

@@ -1,4 +1,35 @@
 apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nis-library-db-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  hostPath:
+    path: /nis-library-data/data
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nis-library-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+---
+
+
+
+
+apiVersion: v1
 kind: Pod
 metadata:
   name: nis-library-pod
@@ -29,3 +60,11 @@ spec:
         value: "CityLibrary"
     ports:
     - containerPort: 5432
+    volumeMounts:
+    - name: nis-library-db-storage
+      mountPath: /var/lib/postgresql/data
+
+  volumes:
+  - name: nis-library-db-storage
+    persistentVolumeClaim:
+      claimName: nis-library-db-pvc
